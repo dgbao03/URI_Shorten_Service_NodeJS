@@ -4,11 +4,18 @@ import { nanoid } from "nanoid";
 class ShortenService {
     static async shortenURL(originalUrl) {
         try {
-            const shortId = nanoid(6); 
-            const shortenUrl = `${process.env.BASE_URL}/${shortId}`;
+            let existedShortUrl = await URL.getExistedShortUrl(originalUrl);
 
+            if (existedShortUrl != undefined) {
+                return existedShortUrl.short_url;
+            }
+
+            const shortId = nanoid(8); 
+            const shortenUrl = `${process.env.SHORTEN_BASE_URL}/${shortId}`;
+
+            // Store the urls in database
             const data = await URL.setURL(originalUrl, shortenUrl);
-            if (data === undefined){
+            if (data === undefined) {
                 throw Error;
             } else {
                 return shortenUrl;
