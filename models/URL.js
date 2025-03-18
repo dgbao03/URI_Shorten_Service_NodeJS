@@ -18,6 +18,23 @@ class URL {
             throw error;
         }
     }
+
+    static async getOriginalUrl(shortenUrl) {
+        try {
+            const { rows } = await pool.query('SELECT original_url FROM urls WHERE short_url = $1', [shortenUrl]);
+
+            console.log(rows[0]);
+            console.log(rows[0].original_url);
+
+            if (rows.length === 0) {
+                return null; 
+            }
+
+            return rows[0].original_url;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 export default URL;
