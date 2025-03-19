@@ -1,5 +1,6 @@
 import URL from "../models/URL.js";
 import { nanoid } from "nanoid";
+import { setRedis } from "../repositories/redis.js";
 
 class ShortenService {
     static async shortenURL(originalUrl) {
@@ -14,15 +15,22 @@ class ShortenService {
             const shortId = nanoid(8); 
             const shortenUrl = `${process.env.SHORTEN_BASE_URL}/${shortId}`;
 
-            // Store the urls in database
+            // Store Shorten/Original Url in PG Database 
             const data = await URL.setURL(originalUrl, shortenUrl);
-            if (data === undefined) {
+            if (!data) {
                 throw Error;
-            } else {
-                return shortenUrl;
+            } 
+
+            // Store Shorten/Original Url in Redis
+            try {
+                await setRedis(shortenUrl, originalUrl);
+            } catch (error) {
+                throw Error;
             }
 
+            return shortenUrl;
         } catch (error) {
+            console.error("Lỗi khi xử lý Service:", error);
             throw error
         }
     }
