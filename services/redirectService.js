@@ -1,17 +1,21 @@
 import URL from "../models/URL.js";
-
+import { getRedis, setRedis } from "../repositories/redis.js";
 class RedirectService {
     static async getOriginalUrl(shortenUrl) {
         try {
-            const originalUrl = await URL.getOriginalUrl(shortenUrl);
+            const redisOriginalUrl = await getRedis(shortenUrl);
 
-            console.log("Service Original URL: " + originalUrl)
+            if (!redisOriginalUrl) {
+                return redisOriginalUrl;
+            }
+
+            const originalUrl = await URL.getOriginalUrl(shortenUrl);
 
             if (!originalUrl){
                 throw new Error("404-NOTFOUND");
-            } else {
-                return originalUrl;
-            }
+            } 
+
+            return originalUrl;
         } catch (error) {
             throw error;
         }

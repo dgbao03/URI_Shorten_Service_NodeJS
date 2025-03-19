@@ -6,8 +6,6 @@ export const redirectShortUrl = async (req, res) => {
         const shortenUrl = req.protocol + '://' + req.get('host') + req.originalUrl; 
         const originalUrl = await RedirectService.getOriginalUrl(shortenUrl);
 
-        console.log("Controller Original URL: " + originalUrl);
-
         res.redirect(301, originalUrl);
 
     } catch (error) {
