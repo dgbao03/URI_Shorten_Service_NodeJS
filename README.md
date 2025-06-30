@@ -28,12 +28,14 @@ This service is ideal for improving readability and shareability of long URLs in
 
 - `GET /shorten?url={originalUrl}` - Accepts a long URL as a query parameter and returns a shortened version.  
 
-- `GET /:shortId` - Redirects the user to the original URL based on the provided `shortId`.  
+- `GET /:shortId` - Redirects the user to the original URL based on the provided `shortId`.
+
+---
 
 ## License
 MIT License
 
-Copyright (c) 2024 BaoDo
+Copyright (c) 2025 BaoDo
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
